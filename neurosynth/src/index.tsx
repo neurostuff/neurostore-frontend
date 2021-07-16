@@ -1,17 +1,46 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            light: '#0096c7',
+            main: '#0077b6',
+            dark: '#023e8a',
+            contrastText: '#ffffff',
+        },
+        secondary: {
+            light: '#f2a354',
+            main: '#ef8a24',
+            dark: '#e47a11',
+            contrastText: '#ffffff',
+        },
+        error: {
+            main: '#ff6b6b',
+            contrastText: '#ffffff',
+        },
+        warning: {
+            main: '#ffe66d',
+            contrastText: '#000000',
+        },
+        success: {
+            main: '#4caf50',
+            contrastText: '#000000',
+        },
+    },
+});
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <ThemeProvider theme={theme}>
+            <App />
+        </ThemeProvider>
+    </React.StrictMode>,
+    document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function
