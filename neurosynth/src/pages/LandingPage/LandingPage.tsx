@@ -1,58 +1,16 @@
 import logo from '../../assets/images/logo.png';
-import { makeStyles } from '@material-ui/core';
+import utLogo from '../../assets/images/utlogo.png';
+import nihLogo from '../../assets/images/nihlogo.png';
+import mcgillLogo from '../../assets/images/mcgilllogo.png';
+import fiuLogo from '../../assets/images/fiulogo.png';
+import oxfordLogo from '../../assets/images/oxfordlogo.png';
+import stanfordLogo from '../../assets/images/stanfordlogo.png';
 
-const useStyles = makeStyles((theme) => ({
-    contentContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '50px 0',
-    },
-    titleContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        fontFamily: 'Inter',
-        width: '650px',
-        [theme.breakpoints.down('sm')]: {
-            flexDirection: 'column',
-            width: '100%',
-        },
-    },
-    title: {
-        fontSize: '2.5rem',
-        textAlign: 'center',
-        [theme.breakpoints.down('sm')]: {
-            marginRight: '0',
-            fontSize: '1.5rem',
-        },
-    },
-    logo: {
-        width: '120px',
-        [theme.breakpoints.down('sm')]: {
-            width: '100px',
-        },
-    },
-    descriptor: {
-        fontSize: '1.5rem',
-        fontFamily: 'Roboto',
-        color: 'darkgray',
-        width: '650px',
-        margin: '2% 0',
-        lineHeight: '2',
-        [theme.breakpoints.down('sm')]: {
-            fontSize: '1rem',
-            margin: '8% 0',
-            textAlign: 'center',
-            width: '80%',
-        },
-    },
-}));
+import { Divider } from '@material-ui/core';
+import LandingPageStyles from './LandingPageStyles';
 
 const LandingPage = () => {
-    const classes = useStyles();
+    const classes = LandingPageStyles();
     return (
         <div className={classes.contentContainer}>
             <div className={classes.titleContainer}>
@@ -65,10 +23,56 @@ const LandingPage = () => {
                 neurosynth is a platform for large-scale, automated synthesis of
                 functional magnetic resonance imaging (fMRI) data.
             </div>
-            <div>
-                <div></div>
-                <div></div>
-                <div></div>
+            <Divider className={classes.divider} />
+            <div className={classes.sponsorContainer}>
+                <div className={classes.sponsorsImgContainer}>
+                    <div className={classes.sponsorLogoContainer}>
+                        <img
+                            src={utLogo}
+                            className={classes.sponsorLogo}
+                            alt="UT Logo"
+                        />
+                    </div>
+                    <div className={classes.sponsorLogoContainer}>
+                        <img
+                            src={mcgillLogo}
+                            className={classes.sponsorLogo}
+                            alt="Mcgill Logo"
+                        />
+                    </div>
+                    <div className={classes.sponsorLogoContainer}>
+                        <img
+                            src={nihLogo}
+                            className={classes.sponsorLogo}
+                            alt="NIH Logo"
+                        />
+                    </div>
+                    <div className={classes.sponsorLogoContainer}>
+                        <img
+                            src={fiuLogo}
+                            className={classes.sponsorLogo}
+                            alt="FIU Logo"
+                        />
+                    </div>
+                    <div className={classes.sponsorLogoContainer}>
+                        <img
+                            src={oxfordLogo}
+                            className={classes.sponsorLogo}
+                            alt="Oxford Logo"
+                        />
+                    </div>
+                    <div className={classes.sponsorLogoContainer}>
+                        <img
+                            src={stanfordLogo}
+                            className={classes.sponsorLogo}
+                            alt="Stanford Logo"
+                        />
+                    </div>
+                </div>
+                <Divider className={classes.divider} />
+                <div className={classes.nihAwardText}>
+                    Supported by NIH award 5R01MH096906-06
+                </div>
             </div>
         </div>
     );

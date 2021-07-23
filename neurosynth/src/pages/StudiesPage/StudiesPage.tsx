@@ -1,26 +1,63 @@
 import { useEffect, useState } from 'react';
 import { StudiesService } from '../../api';
-import { Study } from '../../gen/api';
+import { Typography } from '@material-ui/core';
+import { DataGrid, GridColDef, GridRowsProp } from '@material-ui/data-grid';
+import StudiesPageStyles from './StudiesPageStyles';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import { useCallback } from 'react';
+
+const columns: GridColDef[] = [
+    { field: 'col1', headerName: 'Name', width: 400 },
+    { field: 'col2', headerName: 'Description', width: 250 },
+    { field: 'col3', headerName: 'Authors', width: 400 },
+];
+
+const optionsPerPage: number[] = [10, 25, 50];
 
 const StudiesPage = () => {
-    const [studies, setStudies] = useState<Study[]>();
+    const classes = StudiesPageStyles();
+    const [studies, setStudies] = useState<GridRowsProp>([]);
+    const [searchTerm, setSearchTerm] = useState('');
 
-    useEffect(() => {
-        StudiesService.studiesGet().then((res) => {
-            console.log('called');
-
-            setStudies(res.data);
-        });
+    const getStudies = useCallback((searchStr: string | undefined) => {
+        StudiesService.studiesGet(searchStr)
+            .then((res) => {
+                const rows: GridRowsProp = res?.data.map((studyData) => {
+                    return {
+                        id: studyData.id,
+                        col1: studyData.name,
+                        col2: studyData.description,
+                        col3: (studyData.metadata as any)?.authors,
+                    };
+                });
+                setStudies(rows);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }, []);
 
-    return (
-        <>
-            <div>Studies page</div>
+    const handleOnSearch = (newSearchTerm: string) => {
+        setSearchTerm(newSearchTerm);
+    };
 
-            {studies?.map((study, i) => (
-                <p key={i}>{study.name}</p>
-            ))}
-        </>
+    useEffect(() => {
+        getStudies(searchTerm === '' ? undefined : searchTerm);
+    }, [getStudies, searchTerm]);
+
+    return (
+        <div className={classes.studiesPageContainer}>
+            <Typography variant="h4">Studies Page</Typography>
+
+            <SearchBar onSearch={handleOnSearch} />
+            <div className={classes.dataGridContainer}>
+                <DataGrid
+                    rows={studies}
+                    columns={columns}
+                    rowsPerPageOptions={optionsPerPage}
+                ></DataGrid>
+            </div>
+        </div>
     );
 };
 export default StudiesPage;

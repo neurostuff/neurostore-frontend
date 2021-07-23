@@ -4,7 +4,6 @@ import {
     Toolbar,
     Typography,
     Button,
-    makeStyles,
     IconButton,
     Drawer,
     Hidden,
@@ -14,43 +13,7 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
-
-const useStyles = makeStyles((theme) => {
-    return {
-        link: {
-            textDecoration: 'none',
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            padding: '0 18px',
-            color: theme.palette.primary.contrastText,
-        },
-        toolbar: {
-            // "height: 1px" is a workaround due to a bug where the child cannot inherit the min-height property of the parent:
-            // https://stackoverflow.com/questions/8468066/child-inside-parent-with-min-height-100-not-inheriting-height
-            height: '1px',
-            display: 'flex',
-            justifyContent: 'space-between',
-        },
-        navLinksContainer: {
-            height: '100%',
-            display: 'flex',
-        },
-        button: {
-            margin: '0',
-            padding: '0',
-            '& span': {
-                height: '100%',
-            },
-        },
-        list: {
-            width: '240px',
-        },
-        active: {
-            color: theme.palette.secondary.main,
-        },
-    };
-});
+import NavbarStyles from './NavbarStyles';
 
 const NavItems: { label: string; path: string }[] = [
     { label: 'Home', path: '/' },
@@ -60,8 +23,8 @@ const NavItems: { label: string; path: string }[] = [
 ];
 
 const Navbar = () => {
+    const classes = NavbarStyles();
     const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-    const classes = useStyles();
 
     const toggleDrawer = () => {
         setDrawerIsOpen((prevState) => !prevState);
@@ -92,6 +55,7 @@ const Navbar = () => {
             </Hidden>
             <Hidden mdUp>
                 <Toolbar className={classes.toolbar}>
+                    <Typography variant="h5">neurosynth</Typography>
                     <Drawer
                         anchor="left"
                         open={drawerIsOpen}
@@ -106,9 +70,6 @@ const Navbar = () => {
                                     to={navItem.path}
                                     onClick={toggleDrawer}
                                 >
-                                    {/* <ListItemText
-                                        primary={navItem.label}
-                                    ></ListItemText> */}
                                     <ListItemText primary={navItem.label} />
                                 </ListItem>
                             ))}
@@ -117,7 +78,6 @@ const Navbar = () => {
                     <IconButton onClick={toggleDrawer} size="medium">
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h5">neurosynth</Typography>
                 </Toolbar>
             </Hidden>
         </AppBar>
