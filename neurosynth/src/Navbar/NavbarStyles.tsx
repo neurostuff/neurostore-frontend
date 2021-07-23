@@ -30,9 +30,6 @@ const NavbarStyles = makeStyles((theme) => {
                 height: '100%',
             },
         },
-        list: {
-            width: '240px',
-        },
         active: {
             color: theme.palette.secondary.main,
         },

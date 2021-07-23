@@ -1,34 +1,22 @@
 import { NavLink } from 'react-router-dom';
-import {
-    AppBar,
-    Toolbar,
-    Typography,
-    Button,
-    IconButton,
-    Drawer,
-    Hidden,
-    List,
-    ListItem,
-    ListItemText,
-} from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import { useState } from 'react';
+import { AppBar, Toolbar, Typography, Button, Hidden } from '@material-ui/core';
 import NavbarStyles from './NavbarStyles';
+import { useAuth0 } from '@auth0/auth0-react';
+import NavbarDrawer from './Navbar/NavbarDrawer';
 
-const NavItems: { label: string; path: string }[] = [
+export interface NavOptionsModel {
+    label: string;
+    path: string;
+}
+
+const navItems: NavOptionsModel[] = [
     { label: 'Home', path: '/' },
     { label: 'Studies', path: '/studies' },
-    { label: 'Login', path: 'login' },
-    { label: 'Sign Up', path: 'Sign Up' },
 ];
 
 const Navbar = () => {
     const classes = NavbarStyles();
-    const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-
-    const toggleDrawer = () => {
-        setDrawerIsOpen((prevState) => !prevState);
-    };
+    const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
     return (
         <AppBar position="static" elevation={0}>
@@ -38,7 +26,7 @@ const Navbar = () => {
                         <Typography variant="h5">neurosynth</Typography>
                     </div>
                     <div className={classes.navLinksContainer}>
-                        {NavItems.map((navItem, index) => (
+                        {navItems.map((navItem, index) => (
                             <Button key={index} className={classes.button}>
                                 <NavLink
                                     className={classes.link}
@@ -50,34 +38,28 @@ const Navbar = () => {
                                 </NavLink>
                             </Button>
                         ))}
+                        {!isAuthenticated && (
+                            <Button
+                                className={classes.button}
+                                onClick={() => loginWithRedirect()}
+                            >
+                                <span className={classes.link}>Login</span>
+                            </Button>
+                        )}
+                        {isAuthenticated && (
+                            <Button
+                                className={classes.button}
+                                onClick={() => logout()}
+                            >
+                                <span className={classes.link}>Logout</span>
+                            </Button>
+                        )}
                     </div>
                 </Toolbar>
             </Hidden>
             <Hidden mdUp>
                 <Toolbar className={classes.toolbar}>
-                    <Typography variant="h5">neurosynth</Typography>
-                    <Drawer
-                        anchor="left"
-                        open={drawerIsOpen}
-                        onClose={toggleDrawer}
-                    >
-                        <List className={classes.list}>
-                            {NavItems.map((navItem, index) => (
-                                <ListItem
-                                    button
-                                    key={index}
-                                    component={NavLink}
-                                    to={navItem.path}
-                                    onClick={toggleDrawer}
-                                >
-                                    <ListItemText primary={navItem.label} />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </Drawer>
-                    <IconButton onClick={toggleDrawer} size="medium">
-                        <MenuIcon />
-                    </IconButton>
+                    <NavbarDrawer navOptions={navItems} />
                 </Toolbar>
             </Hidden>
         </AppBar>

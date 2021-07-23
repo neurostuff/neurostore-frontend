@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Auth0Provider } from '@auth0/auth0-react';
 
 const theme = createTheme({
     palette: {
@@ -34,11 +35,20 @@ const theme = createTheme({
     },
 });
 
+const domain = process.env.REACT_APP_AUTH0_DOMAIN as string;
+const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID as string;
+
 ReactDOM.render(
     <React.StrictMode>
-        <ThemeProvider theme={theme}>
-            <App />
-        </ThemeProvider>
+        <Auth0Provider
+            domain={domain}
+            clientId={clientId}
+            redirectUri={window.location.origin}
+        >
+            <ThemeProvider theme={theme}>
+                <App />
+            </ThemeProvider>
+        </Auth0Provider>
     </React.StrictMode>,
     document.getElementById('root'),
 );
