@@ -5,6 +5,7 @@ import mcgillLogo from '../../assets/images/mcgilllogo.png';
 import fiuLogo from '../../assets/images/fiulogo.png';
 import oxfordLogo from '../../assets/images/oxfordlogo.png';
 import stanfordLogo from '../../assets/images/stanfordlogo.png';
+import origamiLogo from '../../assets/images/origamilogo.png';
 
 import { Divider } from '@material-ui/core';
 import LandingPageStyles from './LandingPageStyles';
@@ -66,6 +67,13 @@ const LandingPage = () => {
                             src={stanfordLogo}
                             className={classes.sponsorLogo}
                             alt="Stanford Logo"
+                        />
+                    </div>
+                    <div className={classes.sponsorLogoContainer}>
+                        <img
+                            src={origamiLogo}
+                            className={classes.sponsorLogo}
+                            alt="Origami Lab Logo"
                         />
                     </div>
                 </div>

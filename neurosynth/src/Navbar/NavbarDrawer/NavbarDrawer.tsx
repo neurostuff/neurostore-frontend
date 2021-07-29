@@ -16,7 +16,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 const NavbarDrawer: React.FC<{ navOptions: NavOptionsModel[] }> = (props) => {
     const [drawerIsOpen, setDrawerIsOpen] = useState(false);
     const classes = NavbarDrawerStyles();
-    const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+    const { loginWithPopup, logout, isAuthenticated } = useAuth0();
     const toggleDrawer = () => {
         setDrawerIsOpen((prevState) => !prevState);
     };
@@ -41,7 +41,7 @@ const NavbarDrawer: React.FC<{ navOptions: NavOptionsModel[] }> = (props) => {
                         <ListItem
                             button
                             onClick={() => {
-                                loginWithRedirect();
+                                loginWithPopup();
                             }}
                         >
                             <ListItemText primary="Login"></ListItemText>

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { StudiesService } from '../../api';
 import { Typography } from '@material-ui/core';
 import { DataGrid, GridColDef, GridRowsProp } from '@material-ui/data-grid';
 import StudiesPageStyles from './StudiesPageStyles';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import { useCallback } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import API from '../../utils/api';
 
 const columns: GridColDef[] = [
     { field: 'col1', headerName: 'Name', width: 400 },
@@ -18,9 +19,18 @@ const StudiesPage = () => {
     const classes = StudiesPageStyles();
     const [studies, setStudies] = useState<GridRowsProp>([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const { getAccessTokenSilently } = useAuth0();
 
-    const getStudies = useCallback((searchStr: string | undefined) => {
-        StudiesService.studiesGet(searchStr)
+    const getStudies = useCallback(async (searchStr: string | undefined) => {
+        let token;
+        try {
+            token = await getAccessTokenSilently();
+        } catch (e) {
+            token = '';
+        }
+
+        API(token)
+            .StudiesService.studiesGet(searchStr)
             .then((res) => {
                 const rows: GridRowsProp = res?.data.map((studyData) => {
                     return {

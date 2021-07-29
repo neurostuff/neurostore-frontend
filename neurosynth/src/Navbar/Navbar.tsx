@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, Hidden } from '@material-ui/core';
 import NavbarStyles from './NavbarStyles';
 import { useAuth0 } from '@auth0/auth0-react';
-import NavbarDrawer from './Navbar/NavbarDrawer';
+import NavbarDrawer from './NavbarDrawer/NavbarDrawer';
 
 export interface NavOptionsModel {
     label: string;
@@ -16,7 +16,7 @@ const navItems: NavOptionsModel[] = [
 
 const Navbar = () => {
     const classes = NavbarStyles();
-    const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+    const { loginWithPopup, logout, isAuthenticated } = useAuth0();
 
     return (
         <AppBar position="static" elevation={0}>
@@ -41,7 +41,7 @@ const Navbar = () => {
                         {!isAuthenticated && (
                             <Button
                                 className={classes.button}
-                                onClick={() => loginWithRedirect()}
+                                onClick={() => loginWithPopup()}
                             >
                                 <span className={classes.link}>Login</span>
                             </Button>
