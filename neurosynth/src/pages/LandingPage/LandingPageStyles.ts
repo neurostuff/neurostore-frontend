@@ -6,7 +6,6 @@ const LandingPageStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: '50px 0',
     },
     titleContainer: {
         display: 'flex',
@@ -65,7 +64,7 @@ const LandingPageStyles = makeStyles((theme) => ({
     descriptor: {
         fontSize: '1.5rem',
         fontFamily: 'Roboto',
-        color: 'darkgray',
+        color: theme.palette.muted.main,
         margin: '2% 0 0 0',
         lineHeight: '2',
         [theme.breakpoints.down('sm')]: {

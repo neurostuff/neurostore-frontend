@@ -13,6 +13,9 @@ const SearchBarStyles = makeStyles({
         height: '35px',
         margin: 'auto auto',
     },
+    icon: {
+        width: '50px',
+    },
 });
 
 export default SearchBarStyles;

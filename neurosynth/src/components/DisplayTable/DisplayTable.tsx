@@ -3,22 +3,26 @@ import {
     TableBody,
     TableCell,
     TableContainer,
-    TableFooter,
     TableHead,
-    TablePagination,
     TableRow,
 } from '@material-ui/core';
-import { Study } from '../../gen/api';
+import { useHistory } from 'react-router-dom';
+import { ReadOnly, Study } from '../../gen/api';
+import { StudyApiResponse } from '../../utils/api';
 import DisplayTableStyles from './DisplayTableStyles';
 
 interface DisplayTableModel {
-    studies: Study[];
+    studies: StudyApiResponse[];
 }
 
 const DisplayTable: React.FC<DisplayTableModel> = (props) => {
-    console.log(props);
-
+    const history = useHistory();
     const classes = DisplayTableStyles();
+
+    const handleSelectTableRow = (row: Study & ReadOnly) => {
+        history.push(`/studies/${row.id}`);
+    };
+
     return (
         <TableContainer>
             <Table size="small">
@@ -31,7 +35,11 @@ const DisplayTable: React.FC<DisplayTableModel> = (props) => {
                 </TableHead>
                 <TableBody>
                     {props.studies.map((row, index) => (
-                        <TableRow key={index} className={classes.tableRow}>
+                        <TableRow
+                            key={index}
+                            className={classes.tableRow}
+                            onClick={() => handleSelectTableRow(row)}
+                        >
                             <TableCell className={`${classes.name}`}>
                                 <div className={classes.tableCellTextContainer}>
                                     {row.name}
@@ -58,9 +66,6 @@ const DisplayTable: React.FC<DisplayTableModel> = (props) => {
                         </TableRow>
                     ))}
                 </TableBody>
-                <TableFooter>
-                    <TableRow></TableRow>
-                </TableFooter>
             </Table>
             {props.studies.length === 0 && (
                 <div className={classes.noContent}>

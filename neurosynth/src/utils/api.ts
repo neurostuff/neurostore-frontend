@@ -5,11 +5,29 @@ import {
     DatasetsApiFactory,
     ImagesApiFactory,
     PointsApiFactory,
+    ReadOnly,
     StudiesApiFactory,
+    Study,
     UserApiFactory,
 } from '../gen/api';
 
-const API = (token: string = '') => {
+export type StudyApiResponse = Study & ReadOnly;
+
+const config: Configuration = new Configuration({
+    basePath: 'https://neurostore.org/api',
+});
+
+const Services = {
+    StudiesService: StudiesApiFactory(config, undefined, undefined),
+    AnalysesService: AnalysesApiFactory(config, undefined, undefined),
+    ConditionsService: ConditionsApiFactory(config, undefined, undefined),
+    DataSetsService: DatasetsApiFactory(config, undefined, undefined),
+    ImagesService: ImagesApiFactory(config, undefined, undefined),
+    PointsService: PointsApiFactory(config, undefined, undefined),
+    UsersService: UserApiFactory(config, undefined, undefined),
+};
+
+const UpdateServicesWithToken = (token: string) => {
     const config: Configuration = new Configuration({
         basePath: 'https://neurostore.org/api',
         baseOptions: {
@@ -19,27 +37,22 @@ const API = (token: string = '') => {
         },
     });
 
-    const StudiesService = StudiesApiFactory(config, undefined, undefined);
-    const AnalysesService = AnalysesApiFactory(config, undefined, undefined);
-    const ConditionsService = ConditionsApiFactory(
+    Services.StudiesService = StudiesApiFactory(config, undefined, undefined);
+    Services.AnalysesService = AnalysesApiFactory(config, undefined, undefined);
+    Services.ConditionsService = ConditionsApiFactory(
         config,
         undefined,
         undefined,
     );
-    const DataSetsService = DatasetsApiFactory(config, undefined, undefined);
-    const ImagesService = ImagesApiFactory(config, undefined, undefined);
-    const PointsService = PointsApiFactory(config, undefined, undefined);
-    const UsersService = UserApiFactory(config, undefined, undefined);
+    Services.DataSetsService = DatasetsApiFactory(config, undefined, undefined);
+    Services.ImagesService = ImagesApiFactory(config, undefined, undefined);
+    Services.PointsService = PointsApiFactory(config, undefined, undefined);
+    Services.UsersService = UserApiFactory(config, undefined, undefined);
+};
 
-    return {
-        StudiesService,
-        AnalysesService,
-        ConditionsService,
-        DataSetsService,
-        ImagesService,
-        PointsService,
-        UsersService,
-    };
+const API = {
+    Services,
+    UpdateServicesWithToken,
 };
 
 export default API;

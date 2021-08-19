@@ -12,6 +12,36 @@ import LandingPageStyles from './LandingPageStyles';
 
 const LandingPage = () => {
     const classes = LandingPageStyles();
+    const logos: { logo: string; alt: string }[] = [
+        {
+            logo: utLogo,
+            alt: 'UT Logo',
+        },
+        {
+            logo: mcgillLogo,
+            alt: 'McGill Logo',
+        },
+        {
+            logo: nihLogo,
+            alt: 'NIH Logo',
+        },
+        {
+            logo: fiuLogo,
+            alt: 'FIU Logo',
+        },
+        {
+            logo: oxfordLogo,
+            alt: 'Oxford Logo',
+        },
+        {
+            logo: stanfordLogo,
+            alt: 'Stanford Logo',
+        },
+        {
+            logo: origamiLogo,
+            alt: 'Origami Labs Logo',
+        },
+    ];
     return (
         <div className={classes.contentContainer}>
             <div className={classes.titleContainer}>
@@ -27,55 +57,18 @@ const LandingPage = () => {
             <Divider className={classes.divider} />
             <div className={classes.sponsorContainer}>
                 <div className={classes.sponsorsImgContainer}>
-                    <div className={classes.sponsorLogoContainer}>
-                        <img
-                            src={utLogo}
-                            className={classes.sponsorLogo}
-                            alt="UT Logo"
-                        />
-                    </div>
-                    <div className={classes.sponsorLogoContainer}>
-                        <img
-                            src={mcgillLogo}
-                            className={classes.sponsorLogo}
-                            alt="Mcgill Logo"
-                        />
-                    </div>
-                    <div className={classes.sponsorLogoContainer}>
-                        <img
-                            src={nihLogo}
-                            className={classes.sponsorLogo}
-                            alt="NIH Logo"
-                        />
-                    </div>
-                    <div className={classes.sponsorLogoContainer}>
-                        <img
-                            src={fiuLogo}
-                            className={classes.sponsorLogo}
-                            alt="FIU Logo"
-                        />
-                    </div>
-                    <div className={classes.sponsorLogoContainer}>
-                        <img
-                            src={oxfordLogo}
-                            className={classes.sponsorLogo}
-                            alt="Oxford Logo"
-                        />
-                    </div>
-                    <div className={classes.sponsorLogoContainer}>
-                        <img
-                            src={stanfordLogo}
-                            className={classes.sponsorLogo}
-                            alt="Stanford Logo"
-                        />
-                    </div>
-                    <div className={classes.sponsorLogoContainer}>
-                        <img
-                            src={origamiLogo}
-                            className={classes.sponsorLogo}
-                            alt="Origami Lab Logo"
-                        />
-                    </div>
+                    {logos.map((logo) => (
+                        <div
+                            key={logo.logo}
+                            className={classes.sponsorLogoContainer}
+                        >
+                            <img
+                                className={classes.sponsorLogo}
+                                src={logo.logo}
+                                alt={logo.alt}
+                            />
+                        </div>
+                    ))}
                 </div>
                 <Divider className={classes.divider} />
                 <div className={classes.nihAwardText}>

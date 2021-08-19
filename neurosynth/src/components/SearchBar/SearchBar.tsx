@@ -32,7 +32,7 @@ const SearchBar: React.FC<SearchbarModel> = (props) => {
                     className={classes.textfield}
                 />
                 <Divider className={classes.divider} orientation="vertical" />
-                <IconButton onClick={handleOnSubmit}>
+                <IconButton className={classes.icon} onClick={handleOnSubmit}>
                     <SearchIcon color="primary" />
                 </IconButton>
             </Paper>
