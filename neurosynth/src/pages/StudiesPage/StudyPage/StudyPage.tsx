@@ -1,45 +1,62 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button, Tooltip, Typography } from '@material-ui/core';
-import { useEffect } from 'react';
+import { AxiosError } from 'axios';
+import React, { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import DisplayMetadataTable from '../../../components/DisplayMetadataTable/DisplayMetadataTable';
 import API, { StudyApiResponse } from '../../../utils/api';
 import StudyPageStyles from './StudyPageStyles';
-import EditMetadata from './EditMetadata/EditMetadata';
 
 const StudyPage = () => {
     const [study, setStudy] = useState<StudyApiResponse>();
     const classes = StudyPageStyles();
-    const { isAuthenticated } = useAuth0();
+    const history = useHistory();
+    const { isAuthenticated, getAccessTokenSilently } = useAuth0();
     const params: { studyId: string } = useParams();
 
-    const getStudy = (id: string) => {
+    const getStudy = useCallback((id: string) => {
         API.Services.StudiesService.studiesIdGet(id)
             .then((res) => {
                 setStudy(res.data);
             })
             .catch(() => {});
+    }, []);
+
+    const handleCloneStudy = async () => {
+        try {
+            const token = await getAccessTokenSilently();
+            API.UpdateServicesWithToken(token);
+        } catch (exception) {
+            console.log(exception);
+        }
+        API.Services.StudiesService.studiesPost(undefined, params.studyId, {})
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err: Error | AxiosError) => {
+                console.log(err.message);
+            });
     };
 
-    const cloneStudy = () => {
-        API.Services.StudiesService.studiesPost();
+    const handleEditStudy = (event: React.MouseEvent) => {
+        history.push(`/studies/edit/${params.studyId}`);
     };
 
     useEffect(() => {
         if (params.studyId) {
             getStudy(params.studyId);
         }
-    }, []);
+    }, [params.studyId, getStudy]);
 
     return (
         <div>
             <div className={classes.buttonContainer}>
-                <Tooltip
-                    placement="top"
-                    title={!isAuthenticated ? 'login to clone study' : ''}
-                >
+                <Tooltip placement="top" title={!isAuthenticated ? 'login to clone study' : ''}>
                     <div style={{ display: 'inline' }}>
                         <Button
+                            onClick={handleCloneStudy}
                             disabled={!isAuthenticated}
                             variant="outlined"
                             color="primary"
@@ -48,33 +65,22 @@ const StudyPage = () => {
                         </Button>
                     </div>
                 </Tooltip>
+                <Button onClick={handleEditStudy} variant="outlined" color="secondary">
+                    Edit Study
+                </Button>
             </div>
             <div>
-                <Typography variant="h5">{study?.name}</Typography>
-            </div>
-            <br />
-            <div>{(study?.metadata as any)?.authors}</div>
-            <br />
-            <div className={classes.muted}>
-                {(study?.metadata as any)?.description}
+                <Typography variant="h4">{study?.name}</Typography>
             </div>
 
             <div>
-                <div style={{ margin: '30px 0' }}>
-                    <Typography variant="h6">Edit Metadata</Typography>
+                <div style={{ margin: '15px 0' }}>
+                    <Typography variant="h6">
+                        <b>Metadata</b>
+                    </Typography>
                 </div>
                 <div className={classes.metadataContainer}>
-                    {study?.metadata &&
-                        Object.keys(study?.metadata as any).map(
-                            (key, index) => (
-                                <EditMetadata
-                                    key={index}
-                                    editKey={key}
-                                    editValue={(study.metadata as any)[key]}
-                                    valueType="string"
-                                />
-                            ),
-                        )}
+                    {study && <DisplayMetadataTable metadata={study.metadata} />}
                 </div>
             </div>
         </div>

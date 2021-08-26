@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 
-const DisplayTableStyles = makeStyles((theme) => ({
+const DisplayStudiesTableStyles = makeStyles((theme) => ({
     name: {
         width: '30%',
     },
@@ -20,4 +20,4 @@ const DisplayTableStyles = makeStyles((theme) => ({
     },
 }));
 
-export default DisplayTableStyles;
+export default DisplayStudiesTableStyles;

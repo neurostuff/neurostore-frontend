@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Typography } from '@material-ui/core';
-import DisplayTable from '../../components/DisplayTable/DisplayTable';
+import DisplayTable from '../../components/DisplayStudiesTable/DisplayStudiesTable';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import { useCallback } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -13,7 +13,7 @@ const StudiesPage = () => {
 
     const getStudies = useCallback(
         async (searchStr: string | undefined) => {
-            API.Services.StudiesService.studiesGet(searchStr)
+            API.Services.StudiesService.studiesGet(searchStr, 'name')
                 .then((res) => {
                     setStudies(res.data);
                 })
@@ -32,12 +32,15 @@ const StudiesPage = () => {
         getStudies(searchTerm === '' ? undefined : searchTerm);
     }, [getStudies, searchTerm]);
 
+    const res = (studies as any).results;
+    console.log(res);
+
     return (
         <div>
             <Typography variant="h4">Studies Page</Typography>
 
             <SearchBar onSearch={handleOnSearch} />
-            <DisplayTable studies={studies} />
+            <DisplayTable studies={res ? res : []} />
         </div>
     );
 };

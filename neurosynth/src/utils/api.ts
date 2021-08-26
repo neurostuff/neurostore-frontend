@@ -27,27 +27,28 @@ const Services = {
     UsersService: UserApiFactory(config, undefined, undefined),
 };
 
-const UpdateServicesWithToken = (token: string) => {
-    const config: Configuration = new Configuration({
-        basePath: 'https://neurostore.org/api',
-        baseOptions: {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    });
+let setToken = '';
 
-    Services.StudiesService = StudiesApiFactory(config, undefined, undefined);
-    Services.AnalysesService = AnalysesApiFactory(config, undefined, undefined);
-    Services.ConditionsService = ConditionsApiFactory(
-        config,
-        undefined,
-        undefined,
-    );
-    Services.DataSetsService = DatasetsApiFactory(config, undefined, undefined);
-    Services.ImagesService = ImagesApiFactory(config, undefined, undefined);
-    Services.PointsService = PointsApiFactory(config, undefined, undefined);
-    Services.UsersService = UserApiFactory(config, undefined, undefined);
+const UpdateServicesWithToken = (token: string) => {
+    if (token !== setToken) {
+        setToken = token;
+        const config: Configuration = new Configuration({
+            basePath: 'https://neurostore.org/api',
+            baseOptions: {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+        });
+
+        Services.StudiesService = StudiesApiFactory(config, undefined, undefined);
+        Services.AnalysesService = AnalysesApiFactory(config, undefined, undefined);
+        Services.ConditionsService = ConditionsApiFactory(config, undefined, undefined);
+        Services.DataSetsService = DatasetsApiFactory(config, undefined, undefined);
+        Services.ImagesService = ImagesApiFactory(config, undefined, undefined);
+        Services.PointsService = PointsApiFactory(config, undefined, undefined);
+        Services.UsersService = UserApiFactory(config, undefined, undefined);
+    }
 };
 
 const API = {

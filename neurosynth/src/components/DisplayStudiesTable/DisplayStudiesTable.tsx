@@ -1,23 +1,16 @@
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-} from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { ReadOnly, Study } from '../../gen/api';
 import { StudyApiResponse } from '../../utils/api';
-import DisplayTableStyles from './DisplayTableStyles';
+import DisplayStudiesTableStyles from './DisplayStudiesTableStyles';
 
-interface DisplayTableModel {
+interface DisplayStudiesTableModel {
     studies: StudyApiResponse[];
 }
 
-const DisplayTable: React.FC<DisplayTableModel> = (props) => {
+const DisplayStudiesTable: React.FC<DisplayStudiesTableModel> = (props) => {
     const history = useHistory();
-    const classes = DisplayTableStyles();
+    const classes = DisplayStudiesTableStyles();
 
     const handleSelectTableRow = (row: Study & ReadOnly) => {
         history.push(`/studies/${row.id}`);
@@ -35,31 +28,21 @@ const DisplayTable: React.FC<DisplayTableModel> = (props) => {
                 </TableHead>
                 <TableBody>
                     {props.studies.map((row, index) => (
-                        <TableRow
-                            key={index}
-                            className={classes.tableRow}
-                            onClick={() => handleSelectTableRow(row)}
-                        >
+                        <TableRow key={index} className={classes.tableRow} onClick={() => handleSelectTableRow(row)}>
                             <TableCell className={`${classes.name}`}>
-                                <div className={classes.tableCellTextContainer}>
-                                    {row.name}
-                                </div>
+                                <div className={classes.tableCellTextContainer}>{row.name}</div>
                             </TableCell>
                             <TableCell>
                                 <div className={classes.tableCellTextContainer}>
                                     {(row.metadata as any)?.authors || (
-                                        <span className={classes.noContent}>
-                                            No Author(s)
-                                        </span>
+                                        <span className={classes.noContent}>No Author(s)</span>
                                     )}
                                 </div>
                             </TableCell>
                             <TableCell>
                                 <div className={classes.tableCellTextContainer}>
                                     {(row.metadata as any)?.journal_name || (
-                                        <span className={classes.noContent}>
-                                            No Journal
-                                        </span>
+                                        <span className={classes.noContent}>No Journal</span>
                                     )}
                                 </div>
                             </TableCell>
@@ -77,4 +60,4 @@ const DisplayTable: React.FC<DisplayTableModel> = (props) => {
     );
 };
 
-export default DisplayTable;
+export default DisplayStudiesTable;

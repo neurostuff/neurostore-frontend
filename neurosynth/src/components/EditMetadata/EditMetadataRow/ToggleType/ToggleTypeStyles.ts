@@ -28,11 +28,22 @@ const ToggleTypeStyles = makeStyles({
             borderColor: 'green !important',
         },
     },
-    type_unknown: {
+    type_other: {
         color: 'rgba(0, 0, 0, 0.23)',
+        '& fieldset': {
+            borderColor: 'rgba(0, 0, 0, 0.23)',
+        },
+        '&.Mui-focused > fieldset': {
+            borderColor: 'rgba(0, 0, 0, 0.23) !important',
+        },
     },
-    metadataProperty: {
+    toggle_item: {
         minWidth: '118px',
+    },
+    toggleItemContainer: {
+        height: '100%',
+        display: 'table-cell',
+        verticalAlign: 'middle',
     },
 });
 

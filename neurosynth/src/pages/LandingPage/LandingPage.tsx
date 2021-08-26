@@ -51,29 +51,20 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className={classes.descriptor}>
-                neurosynth is a platform for large-scale, automated synthesis of
-                functional magnetic resonance imaging (fMRI) data.
+                neurosynth is a platform for large-scale, automated synthesis of functional magnetic resonance imaging
+                (fMRI) data.
             </div>
             <Divider className={classes.divider} />
             <div className={classes.sponsorContainer}>
                 <div className={classes.sponsorsImgContainer}>
                     {logos.map((logo) => (
-                        <div
-                            key={logo.logo}
-                            className={classes.sponsorLogoContainer}
-                        >
-                            <img
-                                className={classes.sponsorLogo}
-                                src={logo.logo}
-                                alt={logo.alt}
-                            />
+                        <div key={logo.logo} className={classes.sponsorLogoContainer}>
+                            <img className={classes.sponsorLogo} src={logo.logo} alt={logo.alt} />
                         </div>
                     ))}
                 </div>
                 <Divider className={classes.divider} />
-                <div className={classes.nihAwardText}>
-                    Supported by NIH award 5R01MH096906-06
-                </div>
+                <div className={classes.nihAwardText}>Supported by NIH award 5R01MH096906-06</div>
             </div>
         </div>
     );

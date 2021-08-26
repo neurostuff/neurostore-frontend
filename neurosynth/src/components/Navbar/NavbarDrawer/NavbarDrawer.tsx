@@ -1,12 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import {
-    Typography,
-    IconButton,
-    Drawer,
-    List,
-    ListItem,
-    ListItemText,
-} from '@material-ui/core';
+import { Typography, IconButton, Drawer, List, ListItem, ListItemText } from '@material-ui/core';
 import { useState } from 'react';
 import MenuIcon from '@material-ui/icons/Menu';
 import { NavOptionsModel } from '../Navbar';
@@ -27,13 +20,7 @@ const NavbarDrawer: React.FC<{ navOptions: NavOptionsModel[] }> = (props) => {
             <Drawer anchor="left" open={drawerIsOpen} onClose={toggleDrawer}>
                 <List className={classes.list}>
                     {props.navOptions.map((navItem, index) => (
-                        <ListItem
-                            button
-                            key={index}
-                            component={NavLink}
-                            to={navItem.path}
-                            onClick={toggleDrawer}
-                        >
+                        <ListItem button key={index} component={NavLink} to={navItem.path} onClick={toggleDrawer}>
                             <ListItemText primary={navItem.label} />
                         </ListItem>
                     ))}
