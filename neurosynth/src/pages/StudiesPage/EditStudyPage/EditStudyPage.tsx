@@ -1,5 +1,5 @@
 import { Button, Typography } from '@material-ui/core';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
@@ -11,14 +11,13 @@ const EditStudyPage = () => {
     const classes = EditStudyPageStyles();
     const [study, setStudy] = useState<StudyApiResponse>();
     const [isChanged, setIsChanged] = useState(false);
+    const [metadata, setMetadata] = useState({});
     const history = useHistory();
     const params: { studyId: string } = useParams();
 
     const getStudy = useCallback((id: string) => {
         API.Services.StudiesService.studiesIdGet(id)
             .then((res) => {
-                console.log('hello');
-
                 setStudy(res.data);
             })
             .catch(() => {});
@@ -32,6 +31,8 @@ const EditStudyPage = () => {
         history.push(`/studies/${params.studyId}`);
     };
 
+    const handleOnSave = (event: React.MouseEvent) => {};
+
     useEffect(() => {
         if (params.studyId) {
             getStudy(params.studyId);
@@ -41,7 +42,12 @@ const EditStudyPage = () => {
     return (
         <div style={{ height: '100%' }}>
             <div className={classes.stickyButtonContainer}>
-                <Button disabled={!isChanged} className={`${classes.saveButton} ${classes.button}`} variant="outlined">
+                <Button
+                    onClick={handleOnCancel}
+                    disabled={!isChanged}
+                    className={`${classes.saveButton} ${classes.button}`}
+                    variant="outlined"
+                >
                     Save Changes
                 </Button>
                 <Button

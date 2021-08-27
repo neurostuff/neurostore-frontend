@@ -1,7 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useRef } from 'react';
 import { useState } from 'react';
-import ContentEditable from 'react-contenteditable';
 import ToggleType, { PropertyType } from './EditMetadataRow/ToggleType/ToggleType';
 import EditMetadataStyles from './EditMetadataStyles';
 import DisplayMetadataTableRow, {

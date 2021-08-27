@@ -16,11 +16,6 @@ const EditMetadataRowStyles = makeStyles((themes) => ({
     noContent: {
         color: themes.palette.warning.dark,
     },
-    'div[contenteditable="true"]': {
-        border: '1px dashed #aaa',
-        borderRadius: '5px',
-        padding: '1rem',
-    },
 }));
 
 export default EditMetadataRowStyles;

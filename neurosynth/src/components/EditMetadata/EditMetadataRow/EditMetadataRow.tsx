@@ -7,7 +7,7 @@ import EditMetadataBoolean from './EditMetadataValue/EditMetadataBoolean';
 import EditMetadataNumber from './EditMetadataValue/EditMetadataNumber';
 import EditMetadataString from './EditMetadataValue/EditMetadataString';
 import { useState } from 'react';
-import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
+import { FormGroup, TextField } from '@material-ui/core';
 
 export interface EditMetadataRowModel {
     onMetadataRowEdit: (index: number, updatedKey: string, updatedValue: any) => void;
@@ -46,7 +46,9 @@ const EditMetadataRow: React.FC<EditMetadataRowModel> = (props) => {
         setCurrType(type);
     };
 
-    const handleSetMetadataKey = (event: ContentEditableEvent) => {};
+    const handleSetMetadataKey = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        console.log(event.target.value);
+    };
 
     const handleEdit = (newVal: boolean | number | string) => {
         console.log(newVal);
@@ -58,26 +60,28 @@ const EditMetadataRow: React.FC<EditMetadataRowModel> = (props) => {
             <div className={classes.tableRow}>
                 <ToggleType type={type} onToggle={handleToggle} />
                 <div className={classes.tableCell}>
-                    <ContentEditable
-                        className={classes['div[contenteditable="true"]']}
-                        html={props.metadataRow.metadataKey}
+                    <TextField
                         onChange={handleSetMetadataKey}
+                        variant="outlined"
+                        fullWidth
+                        value={props.metadataRow.metadataKey}
                     />
-                    {/* <span>{props.metadataRow.metadataKey}</span> */}
                 </div>
-                <div className={classes.tableCell} style={{ width: '100%' }}>
-                    {currType === PropertyType.BOOLEAN && (
-                        <EditMetadataBoolean onEdit={handleEdit} value={props.metadataRow.metadataValue} />
-                    )}
-                    {currType === PropertyType.NUMBER && (
-                        <EditMetadataNumber onEdit={handleEdit} value={props.metadataRow.metadataValue} />
-                    )}
-                    {currType === PropertyType.STRING && (
-                        <EditMetadataString onEdit={handleEdit} value={props.metadataRow.metadataValue} />
-                    )}
-                    {currType === PropertyType.OTHER && (
-                        <span className={classes.noContent}>Unsupported Type or NULL</span>
-                    )}
+                <div className={classes.tableCell}>
+                    <div>
+                        {currType === PropertyType.BOOLEAN && (
+                            <EditMetadataBoolean onEdit={handleEdit} value={props.metadataRow.metadataValue} />
+                        )}
+                        {currType === PropertyType.NUMBER && (
+                            <EditMetadataNumber onEdit={handleEdit} value={props.metadataRow.metadataValue} />
+                        )}
+                        {currType === PropertyType.STRING && (
+                            <EditMetadataString onEdit={handleEdit} value={props.metadataRow.metadataValue} />
+                        )}
+                        {currType === PropertyType.OTHER && (
+                            <span className={classes.noContent}>Unsupported Type or NULL</span>
+                        )}
+                    </div>
                 </div>
             </div>
             <div className={classes.tableRow}>
