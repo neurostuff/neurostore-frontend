@@ -14,7 +14,7 @@ const EditStudyPageStyles = makeStyles((theme) => ({
         width: '160px',
     },
     stickyButtonContainer: {
-        backgroundColor: '#fffffff7',
+        backgroundColor: 'white',
         zIndex: 2,
         width: '100%',
         position: 'sticky',

@@ -8,6 +8,11 @@ interface DisplayStudiesTableModel {
     studies: StudyApiResponse[];
 }
 
+enum Owner {
+    badge_neurosynth = 'badge_neuroscience',
+    badge_user = 'badge_iser',
+}
+
 const DisplayStudiesTable: React.FC<DisplayStudiesTableModel> = (props) => {
     const history = useHistory();
     const classes = DisplayStudiesTableStyles();
@@ -24,6 +29,7 @@ const DisplayStudiesTable: React.FC<DisplayStudiesTableModel> = (props) => {
                         <TableCell>Title</TableCell>
                         <TableCell>Authors</TableCell>
                         <TableCell>Journal</TableCell>
+                        <TableCell>Owner</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -44,6 +50,11 @@ const DisplayStudiesTable: React.FC<DisplayStudiesTableModel> = (props) => {
                                     {(row.metadata as any)?.journal_name || (
                                         <span className={classes.noContent}>No Journal</span>
                                     )}
+                                </div>
+                            </TableCell>
+                            <TableCell>
+                                <div className={classes.tableCellTextContainer}>
+                                    {(row as any).user || 'Neurosynth'}
                                 </div>
                             </TableCell>
                         </TableRow>

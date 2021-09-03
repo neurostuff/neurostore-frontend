@@ -26,14 +26,17 @@ const DisplayMetadataTable: React.FC<DisplayMetadataTableModel> = (props) => {
             <Table size="small">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Type</TableCell>
                         <TableCell>Name</TableCell>
-                        <TableCell>Data</TableCell>
+                        <TableCell>Value</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rowData.map((row) => (
-                        <DisplayMetadataTableRow metadataKey={row.metadataKey} metadataValue={row.metadataValue} />
+                    {rowData.map((row, index) => (
+                        <DisplayMetadataTableRow
+                            key={index}
+                            metadataKey={row.metadataKey}
+                            metadataValue={row.metadataValue}
+                        />
                     ))}
                 </TableBody>
             </Table>

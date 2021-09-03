@@ -1,4 +1,6 @@
 import { FormControl, MenuItem, Select } from '@material-ui/core';
+import React from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import ToggleTypeStyles from './ToggleTypeStyles';
 
@@ -8,15 +10,19 @@ interface ToggleTypeModel {
 }
 
 export enum PropertyType {
+    OTHER = 'other',
     STRING = 'string',
     NUMBER = 'number',
     BOOLEAN = 'boolean',
-    OTHER = 'other',
 }
 
-const ToggleType: React.FC<ToggleTypeModel> = (props) => {
+const ToggleType: React.FC<ToggleTypeModel> = React.memo((props) => {
     const classes = ToggleTypeStyles();
     const [type, setType] = useState<PropertyType>(props.type);
+
+    useEffect(() => {
+        setType(props.type);
+    }, [props.type]);
 
     const handleSetType = (
         event: React.ChangeEvent<{
@@ -26,7 +32,6 @@ const ToggleType: React.FC<ToggleTypeModel> = (props) => {
         child: React.ReactNode,
     ) => {
         const selected = event.target.value as PropertyType;
-
         setType(selected);
         props.onToggle(selected);
     };
@@ -36,31 +41,23 @@ const ToggleType: React.FC<ToggleTypeModel> = (props) => {
     return (
         <div className={classes.toggleItemContainer}>
             <FormControl variant="outlined">
-                {type === PropertyType.OTHER && (
-                    <Select disabled={true} className={`${classes.type_other} ${classes.toggle_item}`} value="other">
-                        <MenuItem value="other">OTHER</MenuItem>
-                    </Select>
-                )}
-                {type !== PropertyType.OTHER && (
-                    <Select
-                        className={`${classes[myClass]} ${classes.toggle_item}`}
-                        value={type}
-                        onChange={handleSetType}
-                    >
-                        <MenuItem className={classes.type_string} value="string">
-                            STRING
-                        </MenuItem>
-                        <MenuItem className={classes.type_number} value="number">
-                            NUMBER
-                        </MenuItem>
-                        <MenuItem className={classes.type_boolean} value="boolean">
-                            BOOLEAN
-                        </MenuItem>
-                    </Select>
-                )}
+                <Select className={`${classes[myClass]} ${classes.toggle_item}`} value={type} onChange={handleSetType}>
+                    <MenuItem className={classes.type_string} value="string">
+                        STRING
+                    </MenuItem>
+                    <MenuItem className={classes.type_number} value="number">
+                        NUMBER
+                    </MenuItem>
+                    <MenuItem className={classes.type_boolean} value="boolean">
+                        BOOLEAN
+                    </MenuItem>
+                    <MenuItem className={classes.type_other} value="other">
+                        NONE
+                    </MenuItem>
+                </Select>
             </FormControl>
         </div>
     );
-};
+});
 
 export default ToggleType;

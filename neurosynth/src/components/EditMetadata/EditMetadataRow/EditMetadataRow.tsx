@@ -1,18 +1,20 @@
 import React from 'react';
 import { DisplayMetadataTableRowModel } from '../../DisplayMetadataTable/DisplayMetadataTableRow/DisplayMetadataTableRow';
-import EditMetadataStyles from '../EditMetadataStyles';
 import ToggleType, { PropertyType } from './ToggleType/ToggleType';
 import EditMetadataRowStyles from './EditMetadataRowStyles';
 import EditMetadataBoolean from './EditMetadataValue/EditMetadataBoolean';
 import EditMetadataNumber from './EditMetadataValue/EditMetadataNumber';
 import EditMetadataString from './EditMetadataValue/EditMetadataString';
 import { useState } from 'react';
-import { FormGroup, TextField } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import { useCallback } from 'react';
 
 export interface EditMetadataRowModel {
-    onMetadataRowEdit: (index: number, updatedKey: string, updatedValue: any) => void;
+    metadataValueType: PropertyType;
     metadataRow: DisplayMetadataTableRowModel;
     index: number;
+    onMetadataRowEdit: (index: number, metadataRow: DisplayMetadataTableRowModel) => void;
+    onMetadataRowDelete: (index: number) => void;
 }
 
 export interface IEditMetadataField {
@@ -20,68 +22,96 @@ export interface IEditMetadataField {
     value: string | number | boolean;
 }
 
-const EditMetadataRow: React.FC<EditMetadataRowModel> = (props) => {
-    const [index, setIndex] = useState(props.index);
-    let type: PropertyType;
-    switch (typeof props.metadataRow.metadataValue) {
-        case 'boolean':
-            type = PropertyType.BOOLEAN;
+const propsAreEqual = (prevProp: EditMetadataRowModel, nextProp: EditMetadataRowModel): boolean => {
+    return (
+        prevProp.index === nextProp.index &&
+        prevProp.metadataRow.metadataKey === nextProp.metadataRow.metadataKey &&
+        prevProp.metadataRow.metadataValue === nextProp.metadataRow.metadataValue &&
+        prevProp.metadataValueType === nextProp.metadataValueType
+    );
+};
+
+const EditMetadataRow: React.FC<EditMetadataRowModel> = React.memo((props) => {
+    console.log('editmetadatarow render');
+
+    const classes = EditMetadataRowStyles();
+    const [metadataRow, setMetadataRow] = useState(props.metadataRow);
+
+    const handleToggle = useCallback(
+        (newType: PropertyType) => {
+            setMetadataRow((prevState) => {
+                const updatedItem = { ...prevState };
+
+                switch (newType) {
+                    case PropertyType.BOOLEAN:
+                        updatedItem.metadataValue = false;
+                        break;
+                    case PropertyType.NUMBER:
+                        updatedItem.metadataValue = 0;
+                        break;
+                    case PropertyType.STRING:
+                        updatedItem.metadataValue = '';
+                        break;
+                    default:
+                        updatedItem.metadataValue = null;
+                        break;
+                }
+
+                props.onMetadataRowEdit(props.index, updatedItem);
+                return updatedItem;
+            });
+        },
+        [props.index],
+    );
+
+    const handleEditMetadataValue = useCallback(
+        (event: string | boolean | number) => {
+            setMetadataRow((prevState) => {
+                const updatedState = { ...prevState };
+                updatedState.metadataValue = event;
+                props.onMetadataRowEdit(props.index, updatedState);
+                return updatedState;
+            });
+        },
+        [props.index],
+    );
+
+    const handleDelete = (event: React.MouseEvent) => {
+        props.onMetadataRowDelete(props.index);
+    };
+
+    let component: JSX.Element;
+    switch (props.metadataValueType) {
+        case PropertyType.BOOLEAN:
+            component = <EditMetadataBoolean onEdit={handleEditMetadataValue} value={metadataRow.metadataValue} />;
             break;
-        case 'string':
-            type = PropertyType.STRING;
+        case PropertyType.STRING:
+            component = <EditMetadataString onEdit={handleEditMetadataValue} value={metadataRow.metadataValue} />;
             break;
-        case 'number':
-            type = PropertyType.NUMBER;
+        case PropertyType.NUMBER:
+            component = <EditMetadataNumber onEdit={handleEditMetadataValue} value={metadataRow.metadataValue} />;
             break;
         default:
-            type = PropertyType.OTHER;
+            component = <span className={classes.nullContent}>null</span>;
             break;
     }
-
-    const [row, setRow] = useState(props.metadataRow);
-    const [currType, setCurrType] = useState(type);
-    const classes = EditMetadataRowStyles();
-
-    const handleToggle = (type: PropertyType) => {
-        setCurrType(type);
-    };
-
-    const handleSetMetadataKey = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        console.log(event.target.value);
-    };
-
-    const handleEdit = (newVal: boolean | number | string) => {
-        console.log(newVal);
-        // props.onMetadataRowEdit(index, );
-    };
 
     return (
         <>
             <div className={classes.tableRow}>
-                <ToggleType type={type} onToggle={handleToggle} />
-                <div className={classes.tableCell}>
-                    <TextField
-                        onChange={handleSetMetadataKey}
-                        variant="outlined"
-                        fullWidth
-                        value={props.metadataRow.metadataKey}
-                    />
+                <ToggleType type={props.metadataValueType} onToggle={handleToggle} />
+                <div className={`${classes.tableCell} ${classes.key}`}>
+                    <span>
+                        <b>{metadataRow.metadataKey}</b>
+                    </span>
+                </div>
+                <div className={classes.tableCell} style={{ width: '100%' }}>
+                    <div>{component}</div>
                 </div>
                 <div className={classes.tableCell}>
-                    <div>
-                        {currType === PropertyType.BOOLEAN && (
-                            <EditMetadataBoolean onEdit={handleEdit} value={props.metadataRow.metadataValue} />
-                        )}
-                        {currType === PropertyType.NUMBER && (
-                            <EditMetadataNumber onEdit={handleEdit} value={props.metadataRow.metadataValue} />
-                        )}
-                        {currType === PropertyType.STRING && (
-                            <EditMetadataString onEdit={handleEdit} value={props.metadataRow.metadataValue} />
-                        )}
-                        {currType === PropertyType.OTHER && (
-                            <span className={classes.noContent}>Unsupported Type or NULL</span>
-                        )}
-                    </div>
+                    <Button className={`${classes.updateButton} ${classes.error}`} onClick={handleDelete}>
+                        Delete
+                    </Button>
                 </div>
             </div>
             <div className={classes.tableRow}>
@@ -89,6 +119,6 @@ const EditMetadataRow: React.FC<EditMetadataRowModel> = (props) => {
             </div>
         </>
     );
-};
+}, propsAreEqual);
 
 export default EditMetadataRow;

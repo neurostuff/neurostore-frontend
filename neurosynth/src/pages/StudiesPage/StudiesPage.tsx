@@ -9,13 +9,26 @@ import API, { StudyApiResponse } from '../../utils/api';
 const StudiesPage = () => {
     const [studies, setStudies] = useState<StudyApiResponse[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const { getAccessTokenSilently } = useAuth0();
+    const { getAccessTokenSilently, user } = useAuth0();
 
     const getStudies = useCallback(
         async (searchStr: string | undefined) => {
-            API.Services.StudiesService.studiesGet(searchStr, 'name')
+            API.Services.StudiesService.studiesGet(
+                searchStr,
+                'name',
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                false,
+            )
                 .then((res) => {
-                    setStudies(res.data);
+                    if (res?.data?.results) {
+                        setStudies(res.data.results);
+                    }
                 })
                 .catch((err) => {
                     console.log(err);
@@ -32,15 +45,12 @@ const StudiesPage = () => {
         getStudies(searchTerm === '' ? undefined : searchTerm);
     }, [getStudies, searchTerm]);
 
-    const res = (studies as any).results;
-    console.log(res);
-
     return (
         <div>
             <Typography variant="h4">Studies Page</Typography>
 
             <SearchBar onSearch={handleOnSearch} />
-            <DisplayTable studies={res ? res : []} />
+            <DisplayTable studies={studies} />
         </div>
     );
 };

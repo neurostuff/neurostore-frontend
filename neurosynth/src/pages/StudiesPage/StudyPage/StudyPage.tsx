@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button, Tooltip, Typography } from '@material-ui/core';
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import React, { useEffect } from 'react';
 import { useCallback } from 'react';
 import { useState } from 'react';
@@ -10,16 +10,17 @@ import API, { StudyApiResponse } from '../../../utils/api';
 import StudyPageStyles from './StudyPageStyles';
 
 const StudyPage = () => {
-    const [study, setStudy] = useState<StudyApiResponse>();
+    const [study, setStudy] = useState<StudyApiResponse & { user: string }>();
     const classes = StudyPageStyles();
     const history = useHistory();
-    const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+    const { isAuthenticated, getAccessTokenSilently, user } = useAuth0();
     const params: { studyId: string } = useParams();
 
     const getStudy = useCallback((id: string) => {
         API.Services.StudiesService.studiesIdGet(id)
             .then((res) => {
-                setStudy(res.data);
+                const resUpdated = res as AxiosResponse<StudyApiResponse & { user: string }>;
+                setStudy(resUpdated.data);
             })
             .catch(() => {});
     }, []);

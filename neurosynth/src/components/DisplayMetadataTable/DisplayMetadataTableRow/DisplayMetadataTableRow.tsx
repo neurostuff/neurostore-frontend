@@ -7,6 +7,14 @@ export interface DisplayMetadataTableRowModel {
     metadataValue: any;
 }
 
+const getMetadataValue = (value: any): string => {
+    if (value === null) {
+        return 'null';
+    } else {
+        return value.toString();
+    }
+};
+
 const DisplayMetadataTableRow: React.FC<DisplayMetadataTableRowModel> = (props) => {
     const classes = DisplayMetadataTableRowStyles();
     const type = typeof props.metadataValue;
@@ -26,13 +34,34 @@ const DisplayMetadataTableRow: React.FC<DisplayMetadataTableRowModel> = (props) 
             break;
     }
 
+    const value = getMetadataValue(props.metadataValue);
+
     return (
         <TableRow>
-            <TableCell className={classes[className]}>{type}</TableCell>
-            <TableCell>{props.metadataKey}</TableCell>
-            <TableCell>{props.metadataValue?.toString()}</TableCell>
+            <TableCell>
+                <span>
+                    <b>{props.metadataKey}</b>
+                </span>
+            </TableCell>
+            <TableCell className={classes[className]}>{value}</TableCell>
         </TableRow>
     );
 };
 
 export default DisplayMetadataTableRow;
+
+// filters:
+/**
+ * unique toggle
+ * toggle to show your own studies only (public/mine)
+ * filter by source (neurosynth, neurovault, neuroquery)
+ *
+ * green if you own it, yellow if its an original, red if it belongs to someone else
+ *
+ * add ability to search, move up these fields: name, description, journal name, authors
+ *
+ * add ownership column to table (if neurosynth owns it, then just say neurosynth original)
+ *
+ * name, description, journal name, authors
+ *
+ */

@@ -2,21 +2,21 @@ import { makeStyles } from '@material-ui/core';
 
 const ToggleTypeStyles = makeStyles({
     type_string: {
-        color: 'blue',
-        '& fieldset': {
-            borderColor: 'blue',
-        },
-        '&.Mui-focused > fieldset': {
-            borderColor: 'blue !important',
-        },
-    },
-    type_number: {
         color: 'orange',
         '& fieldset': {
             borderColor: 'orange',
         },
         '&.Mui-focused > fieldset': {
             borderColor: 'orange !important',
+        },
+    },
+    type_number: {
+        color: 'blue',
+        '& fieldset': {
+            borderColor: 'blue',
+        },
+        '&.Mui-focused > fieldset': {
+            borderColor: 'blue !important',
         },
     },
     type_boolean: {
@@ -29,12 +29,12 @@ const ToggleTypeStyles = makeStyles({
         },
     },
     type_other: {
-        color: 'rgba(0, 0, 0, 0.23)',
+        color: '#b5b5b5',
         '& fieldset': {
-            borderColor: 'rgba(0, 0, 0, 0.23)',
+            borderColor: '#b5b5b5',
         },
         '&.Mui-focused > fieldset': {
-            borderColor: 'rgba(0, 0, 0, 0.23) !important',
+            borderColor: '#b5b5b5 !important',
         },
     },
     toggle_item: {

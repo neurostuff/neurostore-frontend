@@ -5,11 +5,11 @@ import EditMetadataFieldsStyles from './EditMetadataFieldsStyles';
 
 const EditMetadataBoolean: React.FC<IEditMetadataField> = (props) => {
     const classes = EditMetadataFieldsStyles();
-    const [state, setState] = useState(false);
+    const [state, setState] = useState(props.value as boolean);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-        setState(checked);
         props.onEdit(checked);
+        setState(checked);
     };
 
     return (
